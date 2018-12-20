@@ -40,3 +40,8 @@
 > You will also need to `source` the file above in your `.vimrc` config file.
 
 > Done!
+
+## Notes
+> `vpm` currently only supports `Vundle` , but pull-requests are welcome, so
+> if you are using any other package manager for ViM, create a pull-request
+> for it :)
