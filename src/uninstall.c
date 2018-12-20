@@ -39,6 +39,8 @@ void advance(int* index, char* current_char, char* buffer) {
  */
 int uninstall(char* plugname) {
     printf("Uninstalling plugin %s ...\n", plugname);
+    
+    int removed = 0;
 
     char* directory = get_directory();
     char* plugins_file = get_plugins_file(directory);
@@ -46,36 +48,43 @@ int uninstall(char* plugname) {
     char* plugins_file_contents = read_file(plugins_file);
     char* new_contents = calloc(strlen(plugins_file_contents), sizeof(char));
 
-    char current_char = plugins_file_contents[0];
+    // for lexing
     int index = 0;
+    char current_char = plugins_file_contents[index];
+    char* current_char_str;
+    
     char* line;
-    int removed = 0;
+    char* expected;
 
+    // parsing line by line
     while (current_char != '\0') {
         line = calloc(256, sizeof(char));
-        strcat(line, charstring(current_char));
+        current_char_str = charstring(current_char);
+        strcat(line, current_char_str);
         advance(&index, &current_char, plugins_file_contents);
 
         while (current_char != '\n' && current_char != '\0') {
-            strcat(line, charstring(current_char));
+            current_char_str = charstring(current_char);
+            strcat(line, current_char_str);
             advance(&index, &current_char, plugins_file_contents);
         }
 
-        char* expected = format("Plugin '%s'", plugname);
+        expected = format("Plugin '%s'", plugname);
 
         if (strstr(line, expected) == NULL) {
             strcat(new_contents, line);
         } else {
             removed += 1;
         }
-
-        free(expected);
     }
 
+    free(expected);
     free(line);
+    free(current_char_str);
 
     if (removed) {
         write_file(plugins_file, new_contents);
+
         if (system("vim +PluginInstall +qall")) {
             printf("Vim responded with an error.\n");
         } else {
@@ -88,6 +97,7 @@ int uninstall(char* plugname) {
     free(new_contents);
     free(plugins_file_contents);
     free(plugins_file);
+    free(directory);
 
     return 0;
 };

@@ -36,12 +36,17 @@ int install(char* plugname) {
         } while(c != 'n' && c != 'y'); 
 
         if (c == 'y')
-            return uninstall(plugname);
+            uninstall(plugname);
         else
             printf("Will keep broken plugin.\n");
     } else {
         printf("Vim responded with OK.\n");
     }
+
+    free(plugins_file_contents);
+    free(plug_line);
+    free(plugins_file);
+    free(directory);
 
     return 0;
 };

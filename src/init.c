@@ -38,10 +38,11 @@ void init_dirs() {
 char* get_directory() {
     struct passwd *pw = getpwuid(getuid());
 
-    char* homedir = pw->pw_dir;
-    char* main_dir = strcat(homedir, "/.vim/vpm");
+    char* directory = calloc(256, sizeof(char));
+    strcat(directory, pw->pw_dir);
+    strcat(directory, "/.vim/vpm");
 
-    return main_dir; 
+    return directory; 
 }
 
 char* get_plugins_file(char* main_dir) {
