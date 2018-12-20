@@ -22,6 +22,10 @@ $(EXEC): $(OBJECTS)
 %.o: %.c includes/%.h
 	gcc -c $(G_FLAGZ) $< -o $@ -fPIC
 
+install:
+	make
+	cp ./vpm /usr/local/bin
+
 clean:
 	-rm *.out
 	-rm *.o

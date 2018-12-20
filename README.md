@@ -24,4 +24,9 @@
     make
     sudo make install
 
+> Now, create these directories and put your plugins in this file:
+
+    $HOME/.vim/vpm/sources.vim
+    
+> _(Create the directories if they do not already exist)_  
 > Done!
