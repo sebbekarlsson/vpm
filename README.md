@@ -2,7 +2,7 @@
 > Vim Plugin Manager
 
 <div width='100%' style='text-align: center; width: 100%;' align='center'>
-    <img src='tty.gif'/>
+    <img src='gif.gif'/>
 </div>
 
 ## Install plugins the easy way
