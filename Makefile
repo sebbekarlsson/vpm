@@ -5,9 +5,9 @@ $(info $(OS))
 G_FLAGZ= -Wall -g -fPIC
 
 ifeq ($(OS), Darwin)
-    FLAGZ=$(G_FLAGZ) -ldl -fPIC
+    FLAGZ=$(G_FLAGZ) -ldl -lcurl -fPIC
 else
-    FLAGZ=$(G_FLAGZ) -ldl -fPIC
+    FLAGZ=$(G_FLAGZ) -ldl -lcurl -fPIC
 endif
 
 EXEC = vpm

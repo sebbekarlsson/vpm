@@ -2,6 +2,7 @@
 #include "includes/install.h"
 #include "includes/uninstall.h"
 #include "includes/list_plugins.h"
+#include "includes/search.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,7 +20,7 @@ int main (int argc, char* argv[]) {
 
     if (argc <= 2 || print_help) {
         printf("Usage: vpm <command>\n");
-        printf("Available commands:\n* install\n* uninstall\n* list\n");
+        printf("Available commands:\n* install\n* uninstall\n* list\n* search\n");
         exit(print_help ? 0 : 1);
     }
 
@@ -31,6 +32,8 @@ int main (int argc, char* argv[]) {
         uninstall(argv[2]);
     } else if (strcmp(cmd, "list") == 0) {
         list_plugins();
+    } else if (strcmp(cmd, "search") == 0) {
+        search(argv[2]);
     }
 
     return 0;
