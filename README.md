@@ -18,6 +18,13 @@
 
 > And the plugin will be removed.
 
+## List installed plugins
+> You can also list currently installed plugins using the `list` command:
+
+    vpm list plugins
+
+    ...
+
 ## Installation
 > To install `vpm`, simply clone down this repository and inside; run:
 

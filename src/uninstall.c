@@ -10,7 +10,8 @@ char* charstring(char c) {
     char str[2] = {};
     str[0] = c;
     str[1] = '\0';
-    char *s_ptr = str;
+    char *s_ptr = calloc(2, sizeof(char));
+    strcpy(s_ptr, str);
 
     return s_ptr;
 }
@@ -28,7 +29,6 @@ void advance(int* index, char* current_char, char* buffer) {
         *current_char = buffer[*index];
     }
 }
-
 
 /**
  * Uninstall a vim plugin
@@ -52,9 +52,7 @@ int uninstall(char* plugname) {
     int removed = 0;
 
     while (current_char != '\0') {
-        strcat(line, charstring(current_char));
         line = calloc(256, sizeof(char));
-
         strcat(line, charstring(current_char));
         advance(&index, &current_char, plugins_file_contents);
 
@@ -78,8 +76,11 @@ int uninstall(char* plugname) {
 
     if (removed) {
         write_file(plugins_file, new_contents);
-        int vim_response = system("vim +PluginInstall +qall");
-        printf("Vim responded with %d\n", vim_response);
+        if (system("vim +PluginInstall +qall")) {
+            printf("Vim responded with an error.\n");
+        } else {
+            printf("Vim responded with OK.\n");
+        }
     } 
 
     printf("Removed %d plugins.\n", removed);
@@ -87,8 +88,6 @@ int uninstall(char* plugname) {
     free(new_contents);
     free(plugins_file_contents);
     free(plugins_file);
-
-    
 
     return 0;
 };

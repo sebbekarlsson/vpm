@@ -1,4 +1,5 @@
 #include "includes/install.h"
+#include "includes/uninstall.h"
 #include "includes/init.h"
 #include "includes/io.h"
 #include <stdio.h>
@@ -26,8 +27,21 @@ int install(char* plugname) {
 
     write_file(plugins_file, plugins_file_contents);
 
-    int vim_response = system("vim +PluginInstall +qall");
-    printf("Vim responded with %d\n", vim_response);
+    if(system("vim +PluginInstall +qall")) {
+        printf("Vim responded with an error.\n");
+        char c;
+        do {
+            printf("Revert and uninstall the plugin? (y/n)");
+            scanf(" %c", &c);
+        } while(c != 'n' && c != 'y'); 
+
+        if (c == 'y')
+            return uninstall(plugname);
+        else
+            printf("Will keep broken plugin.\n");
+    } else {
+        printf("Vim responded with OK.\n");
+    }
 
     return 0;
 };
