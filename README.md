@@ -45,3 +45,18 @@
 > `vpm` currently only supports `Vundle` , but pull-requests are welcome, so
 > if you are using any other package manager for ViM, create a pull-request
 > for it :)
+
+## Technical notes
+### The _list_ command
+> The `list` command is basically just dumping the contents of your `sources.vim` file.
+
+### The install command
+> The `install` command just adds a new line to your `sources.vim` file.
+
+### The uninstall command
+> The `uninstall` command basically just removes the line matching the specified
+> plugin in your `sources.vim` file.
+
+### The install/uninstall GUI
+> The install/uninstall GUI just uses the GUI that your current plugin manager uses,
+> so right now it is using the one that comes with `Vundle`.
