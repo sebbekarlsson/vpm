@@ -52,6 +52,7 @@ int uninstall(char* plugname) {
     int removed = 0;
 
     while (current_char != '\0') {
+        strcat(line, charstring(current_char));
         line = calloc(256, sizeof(char));
 
         strcat(line, charstring(current_char));
