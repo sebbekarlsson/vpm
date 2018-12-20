@@ -36,4 +36,7 @@
     $HOME/.vim/vpm/sources.vim
     
 > _(Create the directories if they do not already exist)_  
+
+> You will also need to `source` the file above in your `.vimrc` config file.
+
 > Done!
