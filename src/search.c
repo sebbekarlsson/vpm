@@ -56,7 +56,6 @@ data* get_data(char* result) {
             }
 
             free_dstr(dstr_str);
-           
         } 
 
         // Digit parsing

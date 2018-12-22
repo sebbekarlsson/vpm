@@ -25,7 +25,15 @@
 
     ...
 
+## Search for plugins online
+> You can search for plugins onlike like this using the `search` command:
+
+    vpm search <query>
+
 ## Installation
+> Dependencies:  
+* libcurl
+
 > To install `vpm`, simply clone down this repository and inside; run:
 
     make
