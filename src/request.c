@@ -5,17 +5,26 @@
 #include <stdlib.h>
 
 
+/**
+ * Curl string
+ */
 struct string {
     char *ptr;
     size_t len;
 };
 
+/**
+ * Initialize a string for curl
+ */
 void init_string(struct string *s) {
     s->len = 0;
     s->ptr = malloc(s->len+1);
     s->ptr[0] = '\0';
 }
 
+/**
+ * Write function for curl
+ */
 size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s) {
     size_t new_len = s->len + size*nmemb;
     s->ptr = realloc(s->ptr, new_len+1);
@@ -26,15 +35,24 @@ size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s) {
     return size*nmemb;
 }
 
+/**
+ * Perform a GET request to a specified URL
+ *
+ * @param char* url
+ *
+ * @return char*
+ */
 char* request(char* url) {
     CURL *curl;
     CURLcode res;
+
     struct string response;
     init_string(&response);
 
     curl_global_init(CURL_GLOBAL_ALL);
 
     curl = curl_easy_init();
+
     if(curl) {
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
@@ -43,7 +61,7 @@ char* request(char* url) {
         res = curl_easy_perform(curl);
 
         if(res != CURLE_OK)
-            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+            fprintf(stderr, "curl failed: %s\n", curl_easy_strerror(res));
 
         curl_easy_cleanup(curl);
     }
