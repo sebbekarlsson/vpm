@@ -1,4 +1,5 @@
 #include "includes/uninstall.h"
+#include "includes/parse_tools.h"
 #include "includes/init.h"
 #include "includes/io.h"
 #include <stdio.h>
@@ -21,13 +22,6 @@ char* format(char* buffer0, char* buffer1) {
     sprintf(str, buffer0, buffer1);
 
     return str;
-}
-
-void advance(int* index, char* current_char, char* buffer) {
-    if (*index < strlen(buffer)) {
-        *index += 1;
-        *current_char = buffer[*index];
-    }
 }
 
 /**
