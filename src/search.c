@@ -11,7 +11,7 @@
 
 typedef struct DATA_STRUCT {
     int pages;
-    char* plugins;
+    dstr* dstr_plugins;
 } data;
 
 /**
@@ -19,14 +19,13 @@ typedef struct DATA_STRUCT {
  */
 data* get_data(char* result) {
     data* x = calloc(1, sizeof(data));
-    x->plugins = calloc(1024, sizeof(char));
+    x->dstr_plugins = init_dstr();
     x->pages = 0;
 
     int index = 0;
     char current_char = result[index];
 
-    int next_is_pages = 0;
-    int next_is_github_url = 0;
+    char* current_lookup_key = calloc(2, sizeof(char));
     dstr* dstr_str;
 
     while (current_char != '\0') {
@@ -36,7 +35,6 @@ data* get_data(char* result) {
         // String parsing
         if (current_char == '"') {
             dstr_str = init_dstr();
-            next_is_pages = 0;
 
             advance(&index, &current_char, result);
 
@@ -45,14 +43,19 @@ data* get_data(char* result) {
                 advance(&index, &current_char, result);
             }
 
-            if (strcmp(dstr_str->value, "total_pages") == 0) {
-                next_is_pages = 1;
-            } else if (strcmp(dstr_str->value, "github_url") == 0) {
-                next_is_github_url = 1;
-            } else if (next_is_github_url) {
-                strcat(x->plugins, dstr_str->value);
-                strcat(x->plugins, "\n");
-                next_is_github_url = 0;
+            if (
+               strcmp(dstr_str->value, "total_pages") == 0 ||
+               strcmp(dstr_str->value, "github_url") == 0
+            ) {
+                current_lookup_key = realloc(
+                    current_lookup_key,
+                    (strlen(dstr_str->value) + 1) * sizeof(char)
+                );
+                strcpy(current_lookup_key, dstr_str->value);
+            } else if (strcmp(current_lookup_key, "github_url") == 0) {
+                dstr_cat(x->dstr_plugins, dstr_str->value);
+                dstr_cat(x->dstr_plugins, "\n");
+                strcpy(current_lookup_key, "\0");
             }
 
             free_dstr(dstr_str);
@@ -67,9 +70,9 @@ data* get_data(char* result) {
                 advance(&index, &current_char, result);
             }
 
-            if (next_is_pages) {
+            if (strcmp(current_lookup_key, "total_pages") == 0) {
                 x->pages = atoi(dstr_digit->value);
-                next_is_pages = 0;
+                strcpy(current_lookup_key, "\0");
             }
 
             free_dstr(dstr_digit);
@@ -98,12 +101,12 @@ void search(char* query) {
         result = request(querybuffer);
         data = get_data(result);
 
-        dstr_cat(dstr_plugins, data->plugins);
+        dstr_cat(dstr_plugins, data->dstr_plugins->value);
     } while (page < data->pages);
     
     free(querybuffer);
     free(result);
-    free(data->plugins);
+    free_dstr(data->dstr_plugins);
     free(data);
 
     printf(dstr_plugins->value);
